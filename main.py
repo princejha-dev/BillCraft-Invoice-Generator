@@ -1,4 +1,4 @@
-from fastapi import FastAPI,HTTPException
+from fastapi import FastAPI,HTTPException,Path
 from fastapi.responses import Response
 from model import Invoice
 import json
@@ -62,11 +62,57 @@ def get_invoice(invoice_id:str):
     #load data
     data=load_data()
 
-    #check invoice exist
+    #check invoice exist or not
     if invoice_id not in data:
         raise HTTPException(status_code=404, detail=f"Invoice ID '{invoice_id}' not found")
     
     return data[invoice_id]
+
+
+@app.put("/update/{invoice_id}", status_code=200)
+def update_invoice(
+    invoice_id: str = Path(..., description="Invoice ID to update", examples=["1"]),
+    invoice_data: Invoice = None
+):
+    data = load_data()
+
+    # check invoice exists
+    if invoice_id not in data:
+        raise HTTPException(status_code=404, detail=f"Invoice ID '{invoice_id}' not found")
+
+    # extract user updated data (only provided fields)
+    updated_data = invoice_data.model_dump(exclude_unset=True, mode="json")
+
+    # merge with existing invoice
+    existing_data = data[invoice_id]
+    existing_data.update(updated_data)
+
+    data[invoice_id] = existing_data
+
+    # save data
+    save_data(data)
+
+    return {"message": "Invoice updated successfully", "invoice": data[invoice_id]}
+
+
+
+@app.delete("/delete/{invoice_id}", status_code=200)
+def delete_invoice(invoice_id: str = Path(..., description="Invoice ID to delete", examples=["1"])):
+    data = load_data()
+
+    if invoice_id not in data:
+        raise HTTPException(status_code=404, detail=f"Invoice ID '{invoice_id}' not found")
+
+    del data[invoice_id]
+    save_data(data)
+
+    return {"message": "Invoice successfully deleted from database"}
+
+
+
+
+    
+
 
 
 
