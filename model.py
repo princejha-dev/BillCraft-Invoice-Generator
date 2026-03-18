@@ -31,6 +31,7 @@ class Tax(BaseModel):
 
 #invoice model
 class Invoice(BaseModel):
+    invoice_id:str
     invoice_no:str
     date:date
 

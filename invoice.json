@@ -1,1 +1,58 @@
-"{\"invoice_no\":\"inv-001\",\"date\":\"2026-03-17\",\"business\":{\"business_name\":\"royal circus\",\"gst\":\"str123jsjs\"},\"customer\":{\"customer_name\":\"rahul\",\"address\":\"pune,india\"},\"items\":[{\"product_name\":\"pen\",\"quantity\":2,\"price\":10.0}],\"tax\":{\"sgst\":9.0,\"cgst\":9.0},\"discount\":5.0,\"subtotal\":20.0,\"tax_amount\":3.6,\"total\":22.6}"
+{
+    "1": {
+        "invoice_id": "1",
+        "invoice_no": "inv-001",
+        "date": "2026-03-18",
+        "business": {
+            "business_name": "info tech",
+            "gst": "sgy373773"
+        },
+        "customer": {
+            "customer_name": "raj",
+            "address": "india"
+        },
+        "items": [
+            {
+                "product_name": "pen",
+                "quantity": 2,
+                "price": 20.0
+            }
+        ],
+        "tax": {
+            "sgst": 9.0,
+            "cgst": 9.0
+        },
+        "discount": 5.0,
+        "subtotal": 40.0,
+        "tax_amount": 7.2,
+        "total": 45.2
+    },
+    "4": {
+        "invoice_id": "4",
+        "invoice_no": "inv-03",
+        "date": "2026-03-18",
+        "business": {
+            "business_name": "infosys",
+            "gst": "sgy373773"
+        },
+        "customer": {
+            "customer_name": "rahul",
+            "address": "india"
+        },
+        "items": [
+            {
+                "product_name": "book",
+                "quantity": 2,
+                "price": 20.0
+            }
+        ],
+        "tax": {
+            "sgst": 9.0,
+            "cgst": 9.0
+        },
+        "discount": 5.0,
+        "subtotal": 40.0,
+        "tax_amount": 7.2,
+        "total": 45.2
+    }
+}
