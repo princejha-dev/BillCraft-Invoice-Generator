@@ -1,6 +1,6 @@
-from pydantic import BaseModel,Field,computed_field,ValidationError
-from datetime import date
-from typing import Annotated,List
+from pydantic import BaseModel,Field,computed_field
+import datetime
+from typing import Annotated,List,Optional
 
 
 #Desginging overall schema of database(Json file)
@@ -33,7 +33,7 @@ class Tax(BaseModel):
 class Invoice(BaseModel):
     invoice_id:str
     invoice_no:str
-    date:date
+    date:datetime.date
 
     business:Business
     customer:Customer
@@ -61,3 +61,14 @@ class Invoice(BaseModel):
     def total(self) -> float:
         discount_value = (self.subtotal * self.discount) / 100
         return (self.subtotal + self.tax_amount) - discount_value
+
+#invoice update model
+class InvoiceUpadte(BaseModel):
+    invoice_no:Optional[str]=None
+    date: Optional[datetime.date] = None
+    business: Optional[Business]=None
+    customer: Optional[Customer]=None
+    items: Optional[list[Item]]=None
+    tax:Optional[Tax]=None
+    discount: Optional[float]=Field(default=None,ge=0)
+

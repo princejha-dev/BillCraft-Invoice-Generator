@@ -1,11 +1,11 @@
 from fastapi import FastAPI,HTTPException,Path
+from pydantic import ValidationError
 from fastapi.responses import Response
-from model import Invoice
+from model import Invoice, InvoiceUpadte
 import json
 import os
 
-def load_data()-> dict[str,dict]:
-    
+def load_data()-> dict[str,dict]:  
     if not os.path.exists("invoice.json"):
         return {}
     
@@ -13,14 +13,16 @@ def load_data()-> dict[str,dict]:
     if os.path.getsize("invoice.json") == 0:
         return {}
     
-    #loads data from json file
-    with open('invoice.json','r') as f:
-        data=json.load(f)
+    try:
+        #loads data from json file
+        with open('invoice.json','r') as f:
+           data=json.load(f)
+    except json.JSONDecodeError:
+        return {}
 
     return data
 
 def save_data(data):
-
     #saves data in json file
     with open('invoice.json','w') as f:
          json.dump(data,f,indent=4)
@@ -70,24 +72,28 @@ def get_invoice(invoice_id:str):
 
 
 @app.put("/update/{invoice_id}", status_code=200)
-def update_invoice(
-    invoice_id: str = Path(..., description="Invoice ID to update", examples=["1"]),
-    invoice_data: Invoice = None
-):
+def update_invoice(invoice_id: str, invoice_data: InvoiceUpadte ):
+
     data = load_data()
 
     # check invoice exists
     if invoice_id not in data:
         raise HTTPException(status_code=404, detail=f"Invoice ID '{invoice_id}' not found")
+    
+    existing_data = data[invoice_id]
 
     # extract user updated data (only provided fields)
-    updated_data = invoice_data.model_dump(exclude_unset=True, mode="json")
-
-    # merge with existing invoice
-    existing_data = data[invoice_id]
+    updated_data = invoice_data.model_dump(exclude_unset=True)
     existing_data.update(updated_data)
 
-    data[invoice_id] = existing_data
+    #re-validatate full object 
+    try:
+        validate_invoice=Invoice(**existing_data)
+    except ValidationError as e:
+        raise HTTPException(status_code=400,detail=e.errors())
+        
+    
+    data[invoice_id] = validate_invoice.model_dump(mode="json")
 
     # save data
     save_data(data)
@@ -107,6 +113,7 @@ def delete_invoice(invoice_id: str = Path(..., description="Invoice ID to delete
     save_data(data)
 
     return {"message": "Invoice successfully deleted from database"}
+
 
 
 
