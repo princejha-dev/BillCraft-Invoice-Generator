@@ -125,5 +125,38 @@
         "subtotal": 3850.0,
         "tax_amount": 693.0,
         "total": 4158.0
+    },
+    "9e8575df": {
+        "invoice_id": "9e8575df",
+        "invoice_no": "INV-200326",
+        "date": "2026-03-20",
+        "business": {
+            "business_name": "Prakash infotech",
+            "gst": "GST23451JKL"
+        },
+        "customer": {
+            "customer_name": "BIrjuu",
+            "address": "bihar,india"
+        },
+        "items": [
+            {
+                "product_name": "computer",
+                "quantity": 1,
+                "price": 700000.0
+            },
+            {
+                "product_name": "laptop",
+                "quantity": 2,
+                "price": 700000.0
+            }
+        ],
+        "tax": {
+            "sgst": 18.0,
+            "cgst": 18.0
+        },
+        "discount": 20.0,
+        "subtotal": 2100000.0,
+        "tax_amount": 756000.0,
+        "total": 2436000.0
     }
 }
